@@ -1,0 +1,175 @@
+en:
+  app:
+    name: "BookExpert"
+    tagline: "Expert system for rating and choosing books"
+    locale_switch: "RU"
+
+  nav:
+    books: "Rate books"
+    profile: "My account"
+    login: "Log in"
+    logout: "Log out"
+    signup: "Sign up"
+
+  flash:
+    login_success: "Welcome, %{email}!"
+    login_failed: "Invalid e-mail or password"
+    logout_success: "You have been logged out"
+    signup_success: "Account created. Happy reading!"
+    unauthorized: "You must log in to access this page"
+    not_found: "This page does not exist"
+    record_not_found: "The requested record was not found"
+
+  sessions:
+    new:
+      title: "Log in"
+      email: "E-mail"
+      password: "Password"
+      submit: "Log in"
+      no_account: "Don't have an account yet?"
+      signup_link: "Sign up"
+
+  users:
+    new:
+      title: "Sign up"
+      email: "E-mail"
+      password: "Password"
+      password_confirmation: "Repeat password"
+      submit: "Create account"
+      have_account: "Already have an account?"
+      login_link: "Log in"
+      errors_header: "The account could not be created:"
+
+  books:
+    index:
+      title: "Expert workspace"
+      subtitle: "Pick a genre, read the book description and drag the slider to give a rating from 1 to 100."
+      genre_label: "Genre"
+      genre_placeholder: "— choose a genre —"
+      loading: "Loading the next book…"
+      rating_label: "Your rating"
+      comment_label: "Your review"
+      comment_placeholder: "What stayed with you? Who would you recommend this book to?"
+      submit: "Save rating"
+      submitting: "Saving…"
+      done_title: "All books in this genre are rated!"
+      done_text: "Choose another genre or open your account to see your statistics."
+      pick_genre: "Start by choosing a genre from the list above."
+      progress: "Rated %{rated} of %{total}"
+      author_prefix: "Author:"
+      year_prefix: "Year:"
+      error_network: "Could not reach the server. Check your connection and try again."
+      error_save: "The rating could not be saved:"
+      average_label: "Average expert rating"
+      count_label: "Ratings"
+      no_average: "no ratings yet"
+      scale_low: "Didn't like it"
+      scale_high: "Masterpiece"
+
+  profiles:
+    show:
+      title: "My account"
+      greeting: "Expert: %{email}"
+      stats_title: "My statistics"
+      total: "Books rated"
+      average: "Average rating"
+      best: "Best rating"
+      worst: "Worst rating"
+      by_genre: "Average rating by genre"
+      genre: "Genre"
+      count: "Books"
+      avg_short: "Average"
+      list_title: "My ratings"
+      book: "Book"
+      author: "Author"
+      rating: "Rating"
+      comment: "Review"
+      date: "Date"
+      no_comment: "— no review —"
+      empty: "You have not rated any books yet."
+      go_rate: "Start rating"
+      export: "Download CSV"
+      recommendation_title: "What to read next"
+      recommendation_text: "Your favourite genre is %{genre}. It still has unrated books — head over to the workspace."
+      recommendation_done: "You have rated every book in the catalogue. Thank you for your expert opinion!"
+
+  csv:
+    headers:
+      id: "ID"
+      genre: "Genre"
+      title: "Title"
+      author: "Author"
+      year: "Year"
+      rating: "Rating (1-100)"
+      comment: "Review"
+      created_at: "Rated at"
+
+  api:
+    unauthorized: "Authorization required"
+    genre_required: "Parameter genre_id is missing"
+    genre_not_found: "Genre not found"
+    book_not_found: "Book not found"
+    created: "Rating saved"
+    too_many_requests: "Too many requests. Wait %{seconds} s and try again"
+    no_route: "No route matches; check the request URL"
+
+  activerecord:
+    models:
+      user: "User"
+      genre: "Genre"
+      book: "Book"
+      evaluation: "Evaluation"
+    attributes:
+      user:
+        email: "E-mail"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+      evaluation:
+        rating: "Rating"
+        comment: "Review"
+        user_id: "User"
+        book_id: "Book"
+        user: "User"
+        book: "Book"
+    errors:
+      models:
+        evaluation:
+          attributes:
+            user_id:
+              taken: "has already rated this book"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "can't be blank"
+      taken: "has already been taken"
+      invalid: "is invalid"
+      confirmation: "doesn't match %{attribute}"
+      too_short: "is too short (minimum is %{count} characters)"
+      too_long: "is too long (maximum is %{count} characters)"
+      not_a_number: "is not a number"
+      not_an_integer: "must be an integer"
+      greater_than_or_equal_to: "must be greater than or equal to %{count}"
+      less_than_or_equal_to: "must be less than or equal to %{count}"
+      inclusion: "is not included in the list"
+      required: "must exist"
+
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    order:
+      - :year
+      - :month
+      - :day
+
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M"
+      short: "%Y-%m-%d"
+    am: "am"
+    pm: "pm"

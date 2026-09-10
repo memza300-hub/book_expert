@@ -1,0 +1,33 @@
+<% content_for :title, t(".title") %>
+
+<section class="auth-card">
+  <h1 class="auth-card__title"><%= t(".title") %></h1>
+
+  <%= form_with url: login_path, method: :post, local: true, class: "form" do |f| %>
+    <div class="form__field">
+      <%= f.label :email, t(".email") %>
+      <%= f.email_field :email,
+            value: params[:email],
+            required: true,
+            autofocus: true,
+            autocomplete: "email",
+            placeholder: "reader@example.com" %>
+    </div>
+
+    <div class="form__field">
+      <%= f.label :password, t(".password") %>
+      <%= f.password_field :password,
+            required: true,
+            autocomplete: "current-password" %>
+    </div>
+
+    <div class="form__actions">
+      <%= f.submit t(".submit"), class: "btn btn--primary btn--block" %>
+    </div>
+  <% end %>
+
+  <p class="auth-card__hint">
+    <%= t(".no_account") %>
+    <%= link_to t(".signup_link"), signup_path %>
+  </p>
+</section>

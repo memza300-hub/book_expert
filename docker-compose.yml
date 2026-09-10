@@ -1,0 +1,62 @@
+# Продакшн-развёртывание BookExpert: Rails-приложение + PostgreSQL + Caddy (HTTPS).
+# Запуск на сервере:  docker compose up -d --build
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: book_expert
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: book_expert_production
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U book_expert -d book_expert_production"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    command: ["./bin/rails", "server"]
+    environment:
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DB_HOST: db
+      DB_PORT: 5432
+      BOOK_EXPERT_DATABASE_USERNAME: book_expert
+      BOOK_EXPERT_DATABASE_PASSWORD: ${DB_PASSWORD}
+      PORT: 3000
+      BINDING: 0.0.0.0
+      RAILS_LOG_LEVEL: info
+    volumes:
+      - storage:/rails/storage
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
+  storage:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,175 @@
+ru:
+  app:
+    name: "BookExpert"
+    tagline: "Экспертная система оценки и выбора книг"
+    locale_switch: "EN"
+
+  nav:
+    books: "Оценка книг"
+    profile: "Личный кабинет"
+    login: "Войти"
+    logout: "Выйти"
+    signup: "Регистрация"
+
+  flash:
+    login_success: "Добро пожаловать, %{email}!"
+    login_failed: "Неверный e-mail или пароль"
+    logout_success: "Вы вышли из системы"
+    signup_success: "Аккаунт создан. Приятного чтения!"
+    unauthorized: "Для доступа к этой странице необходимо войти в систему"
+    not_found: "Такой страницы не существует"
+    record_not_found: "Запрошенная запись не найдена"
+
+  sessions:
+    new:
+      title: "Вход в систему"
+      email: "E-mail"
+      password: "Пароль"
+      submit: "Войти"
+      no_account: "Ещё нет аккаунта?"
+      signup_link: "Зарегистрироваться"
+
+  users:
+    new:
+      title: "Регистрация"
+      email: "E-mail"
+      password: "Пароль"
+      password_confirmation: "Повторите пароль"
+      submit: "Создать аккаунт"
+      have_account: "Уже есть аккаунт?"
+      login_link: "Войти"
+      errors_header: "Не удалось создать аккаунт:"
+
+  books:
+    index:
+      title: "Рабочая область эксперта"
+      subtitle: "Выберите жанр, прочитайте описание книги и передвиньте ползунок, чтобы поставить оценку от 1 до 100."
+      genre_label: "Жанр"
+      genre_placeholder: "— выберите жанр —"
+      loading: "Загружаю следующую книгу…"
+      rating_label: "Ваша оценка"
+      comment_label: "Отзыв о книге"
+      comment_placeholder: "Что вам запомнилось? Кому бы вы порекомендовали эту книгу?"
+      submit: "Сохранить оценку"
+      submitting: "Сохраняю…"
+      done_title: "Все книги этого жанра оценены!"
+      done_text: "Выберите другой жанр или загляните в личный кабинет, чтобы посмотреть статистику."
+      pick_genre: "Начните с выбора жанра в списке выше."
+      progress: "Оценено %{rated} из %{total}"
+      author_prefix: "Автор:"
+      year_prefix: "Год:"
+      error_network: "Не удалось связаться с сервером. Проверьте соединение и попробуйте снова."
+      error_save: "Не удалось сохранить оценку:"
+      average_label: "Средняя оценка экспертов"
+      count_label: "Оценок"
+      no_average: "пока нет оценок"
+      scale_low: "Не понравилось"
+      scale_high: "Шедевр"
+
+  profiles:
+    show:
+      title: "Личный кабинет"
+      greeting: "Эксперт: %{email}"
+      stats_title: "Моя статистика"
+      total: "Оценено книг"
+      average: "Средняя оценка"
+      best: "Лучшая оценка"
+      worst: "Худшая оценка"
+      by_genre: "Средняя оценка по жанрам"
+      genre: "Жанр"
+      count: "Книг"
+      avg_short: "Средняя"
+      list_title: "Мои оценки"
+      book: "Книга"
+      author: "Автор"
+      rating: "Оценка"
+      comment: "Отзыв"
+      date: "Дата"
+      no_comment: "— без отзыва —"
+      empty: "Вы ещё не оценили ни одной книги."
+      go_rate: "Перейти к оценке"
+      export: "Скачать CSV"
+      recommendation_title: "Что почитать дальше"
+      recommendation_text: "Ваш любимый жанр — %{genre}. В нём остались неоценённые книги — загляните в рабочую область."
+      recommendation_done: "Вы оценили все книги в каталоге. Спасибо за экспертное мнение!"
+
+  csv:
+    headers:
+      id: "ID"
+      genre: "Жанр"
+      title: "Название"
+      author: "Автор"
+      year: "Год"
+      rating: "Оценка (1-100)"
+      comment: "Отзыв"
+      created_at: "Дата оценки"
+
+  api:
+    unauthorized: "Требуется авторизация"
+    genre_required: "Не указан параметр genre_id"
+    genre_not_found: "Жанр не найден"
+    book_not_found: "Книга не найдена"
+    created: "Оценка сохранена"
+    too_many_requests: "Слишком много запросов. Подождите %{seconds} с и попробуйте снова"
+    no_route: "Маршрут не найден; проверьте адрес запроса"
+
+  activerecord:
+    models:
+      user: "Пользователь"
+      genre: "Жанр"
+      book: "Книга"
+      evaluation: "Оценка"
+    attributes:
+      user:
+        email: "E-mail"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+      evaluation:
+        rating: "Оценка"
+        comment: "Отзыв"
+        user_id: "Пользователь"
+        book_id: "Книга"
+        user: "Пользователь"
+        book: "Книга"
+    errors:
+      models:
+        evaluation:
+          attributes:
+            user_id:
+              taken: "уже оценивал эту книгу"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "не может быть пустым"
+      taken: "уже занят"
+      invalid: "имеет неверный формат"
+      confirmation: "не совпадает с %{attribute}"
+      too_short: "слишком короткий (минимум %{count} симв.)"
+      too_long: "слишком длинный (максимум %{count} симв.)"
+      not_a_number: "не является числом"
+      not_an_integer: "должно быть целым числом"
+      greater_than_or_equal_to: "должно быть не меньше %{count}"
+      less_than_or_equal_to: "должно быть не больше %{count}"
+      inclusion: "не входит в список допустимых значений"
+      required: "должна существовать"
+
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d %b"
+    day_names: [воскресенье, понедельник, вторник, среда, четверг, пятница, суббота]
+    abbr_day_names: [Вс, Пн, Вт, Ср, Чт, Пт, Сб]
+    month_names: [~, января, февраля, марта, апреля, мая, июня, июля, августа, сентября, октября, ноября, декабря]
+    abbr_month_names: [~, янв., февр., марта, апр., мая, июня, июля, авг., сент., окт., нояб., дек.]
+    order:
+      - :day
+      - :month
+      - :year
+
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M"
+      short: "%d.%m.%Y"
+    am: "утра"
+    pm: "вечера"

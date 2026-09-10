@@ -1,0 +1,35 @@
+# Секреты — никогда не коммитить
+/config/master.key
+/config/credentials/*.key
+/.env
+/.env.*
+!/.env.example
+
+# Логи и временные файлы
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/.keep
+
+# Загруженные файлы и локальные БД
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+# Собранные ассеты и зависимости
+/public/assets
+/node_modules
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/.bundle
+/vendor/bundle
+
+# Редакторы и ОС
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

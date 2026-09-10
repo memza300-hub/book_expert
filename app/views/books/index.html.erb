@@ -1,0 +1,122 @@
+<% content_for :title, t(".title") %>
+
+<section class="workspace"
+         id="evaluation-workspace"
+         data-api-url="/api/v1/books"
+         data-locale="<%= I18n.locale %>"
+         data-text-loading="<%= t('.loading') %>"
+         data-text-done-title="<%= t('.done_title') %>"
+         data-text-done-text="<%= t('.done_text') %>"
+         data-text-pick-genre="<%= t('.pick_genre') %>"
+         data-text-progress="<%= t('.progress', rated: '%{rated}', total: '%{total}') %>"
+         data-text-author-prefix="<%= t('.author_prefix') %>"
+         data-text-year-prefix="<%= t('.year_prefix') %>"
+         data-text-error-network="<%= t('.error_network') %>"
+         data-text-error-save="<%= t('.error_save') %>"
+         data-text-submit="<%= t('.submit') %>"
+         data-text-submitting="<%= t('.submitting') %>"
+         data-text-no-average="<%= t('.no_average') %>">
+
+  <header class="workspace__header">
+    <h1><%= t(".title") %></h1>
+    <p class="workspace__subtitle"><%= t(".subtitle") %></p>
+  </header>
+
+  <div class="workspace__toolbar">
+    <label for="genre-select" class="workspace__label"><%= t(".genre_label") %></label>
+    <select id="genre-select" class="select">
+      <option value=""><%= t(".genre_placeholder") %></option>
+      <% @genres.each do |genre| %>
+        <option value="<%= genre.id %>"><%= genre.name %></option>
+      <% end %>
+    </select>
+
+    <span id="progress" class="workspace__progress" aria-live="polite"></span>
+  </div>
+
+  <div id="status-message" class="workspace__status" aria-live="polite">
+    <%= t(".pick_genre") %>
+  </div>
+
+  <div id="book-card" class="book-card" hidden>
+    <div class="book-card__cover">
+      <img id="book-image" src="" alt="" loading="lazy">
+    </div>
+
+    <div class="book-card__body">
+      <span id="book-genre" class="book-card__genre"></span>
+      <h2 id="book-title" class="book-card__title"></h2>
+      <p class="book-card__meta">
+        <span class="book-card__meta-label"><%= t(".author_prefix") %></span>
+        <span id="book-author"></span>
+        <span class="book-card__meta-sep">·</span>
+        <span class="book-card__meta-label"><%= t(".year_prefix") %></span>
+        <span id="book-year"></span>
+      </p>
+      <p id="book-description" class="book-card__description"></p>
+
+      <div class="book-card__stats">
+        <span class="book-card__stats-label"><%= t(".average_label") %>:</span>
+        <span id="book-average" class="book-card__average"></span>
+        <span class="book-card__meta-sep">·</span>
+        <span class="book-card__stats-label"><%= t(".count_label") %>:</span>
+        <span id="book-count"></span>
+      </div>
+
+      <form id="evaluation-form" class="evaluation-form" novalidate>
+        <input type="hidden" id="book-id" name="book_id" value="">
+
+        <div class="slider" id="rating-slider">
+          <label for="rating-range" class="slider__label"><%= t(".rating_label") %></label>
+
+          <div class="slider__track-wrap">
+            <div class="slider__bubble" id="rating-bubble">
+              <span class="slider__emoji" id="rating-emoji">🙂</span>
+              <span class="slider__value" id="rating-value">50</span>
+            </div>
+            <input type="range"
+                   id="rating-range"
+                   name="rating"
+                   min="1"
+                   max="100"
+                   step="1"
+                   value="50"
+                   class="slider__input"
+                   aria-valuemin="1"
+                   aria-valuemax="100"
+                   aria-valuenow="50">
+          </div>
+
+          <div class="slider__scale">
+            <span><%= t(".scale_low") %></span>
+            <span><%= t(".scale_high") %></span>
+          </div>
+        </div>
+
+        <div class="form__field">
+          <label for="comment"><%= t(".comment_label") %></label>
+          <textarea id="comment"
+                    name="comment"
+                    rows="4"
+                    maxlength="2000"
+                    placeholder="<%= t('.comment_placeholder') %>"></textarea>
+        </div>
+
+        <div id="form-errors" class="form__errors" role="alert" hidden></div>
+
+        <div class="form__actions">
+          <button type="submit" id="submit-button" class="btn btn--primary btn--block">
+            <%= t(".submit") %>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="done-panel" class="done-panel" hidden>
+    <div class="done-panel__icon">🎉</div>
+    <h2 id="done-title"></h2>
+    <p id="done-text"></p>
+    <%= link_to t("nav.profile"), profile_path, class: "btn btn--ghost" %>
+  </div>
+</section>

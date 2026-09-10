@@ -1,0 +1,124 @@
+<% content_for :title, t(".title") %>
+
+<section class="profile">
+  <header class="profile__header">
+    <div>
+      <h1><%= t(".title") %></h1>
+      <p class="profile__greeting"><%= t(".greeting", email: current_user.email) %></p>
+    </div>
+
+    <% if @total.positive? %>
+      <%= link_to t(".export"), profile_export_path(format: :csv), class: "btn btn--primary", data: { turbo: false } %>
+    <% end %>
+  </header>
+
+  <% if @total.zero? %>
+    <div class="empty-state">
+      <div class="empty-state__icon">📖</div>
+      <p><%= t(".empty") %></p>
+      <%= link_to t(".go_rate"), books_path, class: "btn btn--primary" %>
+    </div>
+  <% else %>
+    <h2 class="section-title"><%= t(".stats_title") %></h2>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat__value"><%= @total %></span>
+        <span class="stat__label"><%= t(".total") %></span>
+      </div>
+      <div class="stat">
+        <span class="stat__value"><%= @average %></span>
+        <span class="stat__label"><%= t(".average") %></span>
+      </div>
+      <div class="stat stat--good">
+        <span class="stat__value"><%= @best.rating %></span>
+        <span class="stat__label"><%= t(".best") %></span>
+        <span class="stat__hint"><%= @best.book.title %></span>
+      </div>
+      <div class="stat stat--bad">
+        <span class="stat__value"><%= @worst.rating %></span>
+        <span class="stat__label"><%= t(".worst") %></span>
+        <span class="stat__hint"><%= @worst.book.title %></span>
+      </div>
+    </div>
+
+    <div class="recommendation">
+      <h3><%= t(".recommendation_title") %></h3>
+      <% if @favourite_genre && @has_unrated_in_favourite %>
+        <p><%= t(".recommendation_text", genre: @favourite_genre.name) %></p>
+        <%= link_to t(".go_rate"), books_path, class: "btn btn--ghost btn--small" %>
+      <% else %>
+        <p><%= t(".recommendation_done") %></p>
+      <% end %>
+    </div>
+
+    <h2 class="section-title"><%= t(".by_genre") %></h2>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= t(".genre") %></th>
+            <th class="table__num"><%= t(".count") %></th>
+            <th class="table__num"><%= t(".avg_short") %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @genre_stats.each do |genre, count, avg| %>
+            <tr>
+              <td><%= genre.name %></td>
+              <td class="table__num"><%= count %></td>
+              <td class="table__num"><strong><%= avg %></strong></td>
+              <td class="table__bar">
+                <div class="bar"><div class="bar__fill" style="width: <%= avg %>%"></div></div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="section-title"><%= t(".list_title") %></h2>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= t(".book") %></th>
+            <th><%= t(".author") %></th>
+            <th><%= t(".genre") %></th>
+            <th class="table__num"><%= t(".rating") %></th>
+            <th><%= t(".comment") %></th>
+            <th><%= t(".date") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @evaluations.each do |evaluation| %>
+            <tr>
+              <td>
+                <strong><%= evaluation.book.title %></strong>
+                <% if evaluation.book.year %>
+                  <span class="muted">(<%= evaluation.book.year %>)</span>
+                <% end %>
+              </td>
+              <td><%= evaluation.book.author %></td>
+              <td><%= evaluation.book.genre.name %></td>
+              <td class="table__num">
+                <span class="rating-badge rating-badge--<%= evaluation.verdict_key %>"><%= evaluation.rating %></span>
+              </td>
+              <td class="table__comment">
+                <% if evaluation.comment.present? %>
+                  <%= evaluation.comment %>
+                <% else %>
+                  <span class="muted"><%= t(".no_comment") %></span>
+                <% end %>
+              </td>
+              <td class="muted"><%= l(evaluation.created_at, format: :short) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</section>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= content_for?(:title) ? "#{yield(:title)} — #{t('app.name')}" : t('app.name') %></title>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <%= link_to root_path, class: "brand" do %>
+          <span class="brand__logo">📚</span>
+          <span class="brand__name"><%= t("app.name") %></span>
+          <span class="brand__tagline"><%= t("app.tagline") %></span>
+        <% end %>
+
+        <nav class="site-nav">
+          <% if logged_in? %>
+            <%= link_to t("nav.books"), books_path, class: "site-nav__link #{'is-active' if current_page?(books_path) || current_page?(root_path)}" %>
+            <%= link_to t("nav.profile"), profile_path, class: "site-nav__link #{'is-active' if current_page?(profile_path)}" %>
+            <span class="site-nav__user"><%= current_user.email %></span>
+            <%= button_to t("nav.logout"), logout_path, method: :delete, class: "btn btn--ghost btn--small", form_class: "inline-form" %>
+          <% else %>
+            <%= link_to t("nav.login"), login_path, class: "site-nav__link #{'is-active' if current_page?(login_path)}" %>
+            <%= link_to t("nav.signup"), signup_path, class: "btn btn--primary btn--small" %>
+          <% end %>
+
+          <% other_locale = I18n.locale.to_s == "ru" ? :en : :ru %>
+          <%= link_to t("app.locale_switch"), url_for(locale: other_locale), class: "locale-switch", title: other_locale.to_s.upcase %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page">
+      <% if notice.present? %>
+        <div class="flash flash--notice" role="status"><%= notice %></div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="flash flash--alert" role="alert"><%= alert %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <%= t("app.name") %> · Ruby on Rails <%= Rails::VERSION::STRING %> · PostgreSQL · <%= Time.current.year %>
+      </div>
+    </footer>
+  </body>
+</html>
