@@ -1,51 +1,63 @@
+# Продакшн-развёртывание BookExpert: Rails-приложение + PostgreSQL + Caddy (HTTPS).
+# Запуск на сервере:  docker compose up -d --build
 services:
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_USER: book_expert
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: book_expert_production
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U book_expert -d book_expert_production"]
       interval: 5s
-      timeout: 5s
+      timeout: 3s
       retries: 10
 
-  # Runs the whole Minitest suite against a separate test database.
-  # "web" starts only if this container exits with code 0.
-  test:
-    build: .
-    environment:
-      RAILS_ENV: test
-      DB_HOST: db
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      SECRET_KEY_BASE: test-only-secret
-    depends_on:
-      db:
-        condition: service_healthy
-    command: ["./bin/rails", "test"]
-
-  web:
+  app:
     build: .
     restart: unless-stopped
+    command: ["./bin/rails", "server"]
     environment:
       RAILS_ENV: production
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       DB_HOST: db
-      BOOK_EXPERT_DATABASE_USERNAME: ${DB_USERNAME:-postgres}
-      BOOK_EXPERT_DATABASE_PASSWORD: ${DB_PASSWORD:-postgres}
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      RAILS_FORCE_SSL: ${RAILS_FORCE_SSL:-false}
-      SEED_ON_START: ${SEED_ON_START:-false}
-    ports:
-      - "127.0.0.1:3000:3000"
+      DB_PORT: 5432
+      BOOK_EXPERT_DATABASE_USERNAME: book_expert
+      BOOK_EXPERT_DATABASE_PASSWORD: ${DB_PASSWORD}
+      PORT: 3000
+      BINDING: 0.0.0.0
+      RAILS_LOG_LEVEL: info
+    volumes:
+      - storage:/rails/storage
     depends_on:
       db:
         condition: service_healthy
-      test:
-        condition: service_completed_successfully
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN}
+      ZEROSSL_API_KEY: ${ZEROSSL_API_KEY}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
 
 volumes:
   pgdata:
+  storage:
+  caddy_data:
+  caddy_config:
