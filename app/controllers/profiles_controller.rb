@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
     # Статистика по жанрам: [[Genre, count, average], ...]
     @genre_stats = @evaluations
       .group_by { |evaluation| evaluation.book.genre }
-      .map { |genre, evals| [genre, evals.size, (evals.sum(&:rating).to_f / evals.size).round(1)] }
+      .map { |genre, evals| [ genre, evals.size, (evals.sum(&:rating).to_f / evals.size).round(1) ] }
       .sort_by { |_genre, _count, avg| -avg }
 
     @favourite_genre = current_user.favourite_genre

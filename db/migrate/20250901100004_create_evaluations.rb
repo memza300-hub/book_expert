@@ -11,7 +11,7 @@ class CreateEvaluations < ActiveRecord::Migration[8.0]
 
     # Один пользователь может оценить одну книгу только один раз:
     # составной уникальный индекс дублирует валидацию модели на уровне БД
-    add_index :evaluations, [:user_id, :book_id], unique: true
+    add_index :evaluations, [ :user_id, :book_id ], unique: true
 
     # Диапазон оценки контролируется и на уровне СУБД
     add_check_constraint :evaluations, "rating >= 1 AND rating <= 100", name: "evaluations_rating_range"

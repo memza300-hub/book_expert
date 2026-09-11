@@ -54,7 +54,7 @@ class Rack::Attack
         "Content-Type" => "application/json; charset=utf-8",
         "Retry-After"  => retry_after.to_s
       },
-      [body]
+      [ body ]
     ]
   end
 end

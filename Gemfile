@@ -48,3 +48,8 @@ group :development do
   # Консоль в браузере на страницах ошибок
   gem "web-console"
 end
+
+group :development do
+  gem "brakeman", require: false
+  gem "rubocop-rails-omakase", require: false
+end

@@ -1,13 +1,13 @@
-class ApplicationController < ActionController::Base
-  # Разрешаем только современные браузеры (поддержка webp, import maps, CSS nesting, :has)
+﻿class ApplicationController < ActionController::Base
+  # Р Р°Р·СЂРµС€Р°РµРј С‚РѕР»СЊРєРѕ СЃРѕРІСЂРµРјРµРЅРЅС‹Рµ Р±СЂР°СѓР·РµСЂС‹ (РїРѕРґРґРµСЂР¶РєР° webp, import maps, CSS nesting, :has)
   allow_browser versions: :modern
 
   before_action :set_locale
 
-  # Делаем методы доступными во views
+  # Р”РµР»Р°РµРј РјРµС‚РѕРґС‹ РґРѕСЃС‚СѓРїРЅС‹РјРё РІРѕ views
   helper_method :current_user, :logged_in?
 
-  # Стандартная ошибка "запись не найдена": для API — JSON, для браузера — редирект с flash
+  # РЎС‚Р°РЅРґР°СЂС‚РЅР°СЏ РѕС€РёР±РєР° "Р·Р°РїРёСЃСЊ РЅРµ РЅР°Р№РґРµРЅР°": РґР»СЏ API вЂ” JSON, РґР»СЏ Р±СЂР°СѓР·РµСЂР° вЂ” СЂРµРґРёСЂРµРєС‚ СЃ flash
   rescue_from ActiveRecord::RecordNotFound do |exception|
     logger.warn "RecordNotFound: #{exception.message}"
 
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # Перехват несуществующих маршрутов (match "*path" в routes.rb)
+  # РџРµСЂРµС…РІР°С‚ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… РјР°СЂС€СЂСѓС‚РѕРІ (match "*path" РІ routes.rb)
   rescue_from ActionController::RoutingError do |exception|
     logger.error "Routing error occurred: #{exception.message}"
 
@@ -35,23 +35,23 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # ---------- Локализация ----------
+  # ---------- Р›РѕРєР°Р»РёР·Р°С†РёСЏ ----------
 
-  # Берём локаль из URL (/en/..., /ru/...), иначе используем локаль по умолчанию
+  # Р‘РµСЂС‘Рј Р»РѕРєР°Р»СЊ РёР· URL (/en/..., /ru/...), РёРЅР°С‡Рµ РёСЃРїРѕР»СЊР·СѓРµРј Р»РѕРєР°Р»СЊ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
   def set_locale
     requested = params[:locale].to_s
     I18n.locale = I18n.available_locales.map(&:to_s).include?(requested) ? requested : I18n.default_locale
   end
 
-  # Все генерируемые ссылки автоматически получают текущую локаль.
-  # Для локали по умолчанию сегмент опускается: /books вместо /ru/books
+  # Р’СЃРµ РіРµРЅРµСЂРёСЂСѓРµРјС‹Рµ СЃСЃС‹Р»РєРё Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РїРѕР»СѓС‡Р°СЋС‚ С‚РµРєСѓС‰СѓСЋ Р»РѕРєР°Р»СЊ.
+  # Р”Р»СЏ Р»РѕРєР°Р»Рё РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ СЃРµРіРјРµРЅС‚ РѕРїСѓСЃРєР°РµС‚СЃСЏ: /books РІРјРµСЃС‚Рѕ /ru/books
   def default_url_options
     { locale: (I18n.locale == I18n.default_locale ? nil : I18n.locale) }
   end
 
-  # ---------- Аутентификация ----------
+  # ---------- РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ ----------
 
-  # Текущий пользователь, определяемый по session[:user_id]; результат кешируется в @current_user
+  # РўРµРєСѓС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ, РѕРїСЂРµРґРµР»СЏРµРјС‹Р№ РїРѕ session[:user_id]; СЂРµР·СѓР»СЊС‚Р°С‚ РєРµС€РёСЂСѓРµС‚СЃСЏ РІ @current_user
   def current_user
     return @current_user if defined?(@current_user)
 
@@ -62,11 +62,11 @@ class ApplicationController < ActionController::Base
     current_user.present?
   end
 
-  # before_action для защиты маршрутов, требующих входа в систему
+  # before_action РґР»СЏ Р·Р°С‰РёС‚С‹ РјР°СЂС€СЂСѓС‚РѕРІ, С‚СЂРµР±СѓСЋС‰РёС… РІС…РѕРґР° РІ СЃРёСЃС‚РµРјСѓ
   def authorize
     return if logged_in?
 
-    session[:return_to] = request.fullpath if request.get?
+    session[:return_to] = request.fullpath if request.get? || request.head?
     redirect_to login_path, alert: I18n.t("flash.unauthorized")
   end
 
