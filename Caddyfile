@@ -1,4 +1,8 @@
-{$DOMAIN} {
+{$DOMAIN}, 167-17-177-208.nip.io {
 	encode gzip
 	reverse_proxy app:3000
+	tls {
+		issuer zerossl {$ZEROSSL_API_KEY}
+		issuer acme
+	}
 }
