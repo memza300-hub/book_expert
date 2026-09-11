@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "~> 3.3.0"
 
 # Основа приложения — Ruby on Rails 8
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 8.1.3"
 
 # Конвейер статических файлов Rails 8
 gem "propshaft"
