@@ -1,0 +1,29 @@
+crime:
+  genre: classics
+  title_ru: Преступление и наказание
+  title_en: Crime and Punishment
+  author_ru: Фёдор Достоевский
+  author_en: Fyodor Dostoevsky
+  description_ru: Роман о совести и вине.
+  description_en: A novel about conscience and guilt.
+  year: 1866
+
+master:
+  genre: classics
+  title_ru: Мастер и Маргарита
+  title_en: The Master and Margarita
+  author_ru: Михаил Булгаков
+  author_en: Mikhail Bulgakov
+  description_ru: Сатира, мистика и любовь.
+  description_en: Satire, mysticism and love.
+  year: 1967
+
+dune:
+  genre: scifi
+  title_ru: Дюна
+  title_en: Dune
+  author_ru: Фрэнк Герберт
+  author_en: Frank Herbert
+  description_ru: Пустынная планета Арракис.
+  description_en: The desert planet Arrakis.
+  year: 1965

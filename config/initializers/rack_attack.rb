@@ -14,6 +14,10 @@
 # a shared store (Redis / Solid Cache) so that all Puma workers see the same numbers.
 
 class Rack::Attack
+  # Throttling is switched off in the test environment: the test suite fires
+  # dozens of requests from one address and must not hit the limits
+  Rack::Attack.enabled = false if Rails.env.test?
+
   # Explicit store: the default Rails cache in development is a null store,
   # which would silently disable throttling
   Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
@@ -54,7 +58,7 @@ class Rack::Attack
         "Content-Type" => "application/json; charset=utf-8",
         "Retry-After"  => retry_after.to_s
       },
-      [ body ]
+      [body]
     ]
   end
 end
