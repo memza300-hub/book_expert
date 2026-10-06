@@ -9,7 +9,7 @@ gem "rails", "~> 8.0.2"
 gem "propshaft"
 
 # Драйвер PostgreSQL для Active Record
-gem "pg", "~> 1.5"
+gem "pg", "~> 1.7"
 
 # Веб-сервер Puma
 gem "puma", ">= 5.0"
